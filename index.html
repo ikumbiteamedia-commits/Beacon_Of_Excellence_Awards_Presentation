@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beacon of Excellence Awards · Strategic Business &amp; Growth Direction</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0b1b33;--gold:#b8924a;--ivory:#f7f4ec;--steel:#5b7594;--steel-l:#dfe6ee;--bg:#f7f4ec;--text:#0b1b33;--card:rgba(255,253,248,.9);--bd:rgba(11,27,51,.14);--panel:rgba(255,251,242,.95)}
+body{font-family:'Quicksand',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh;transition:background .3s,color .3s}
+body.dark-mode{--bg:#0a1424;--text:#e9e4d8;--card:rgba(20,34,58,.92);--bd:rgba(184,146,74,.3);--panel:rgba(16,28,48,.97);--steel-l:#1d2f4b;--navy:#d9b46a}
+body.high-contrast{--navy:#000;--gold:#8a6200;--bg:#fff;--text:#000;--card:#fff;--bd:#000}
+.zoom-container{transition:transform .2s;transform-origin:top center}
+.wheel-nav{position:fixed;top:50%;left:1.2rem;transform:translateY(-50%);z-index:1050;display:flex;flex-direction:column;align-items:center;gap:.3rem;background:var(--panel);backdrop-filter:blur(14px);padding:.8rem .4rem;border-radius:60px;box-shadow:0 12px 35px rgba(11,27,51,.25);border:1px solid var(--bd);max-height:92vh;overflow-y:auto;overflow-x:visible;scrollbar-width:none}
+.wheel-nav::-webkit-scrollbar{display:none}
+.nav-item{position:relative;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid var(--steel);color:var(--steel);font-size:.9rem;transition:.25s;cursor:pointer;flex-shrink:0}
+.nav-item:hover,.nav-item.active{background:var(--navy);color:var(--bg);border-color:var(--navy)}
+.nav-item:hover{transform:scale(1.12)}
+.nav-item.active{box-shadow:0 0 0 3px var(--gold)}
+.nav-item::after{content:attr(data-label);position:absolute;left:130%;top:50%;transform:translateY(-50%) translateX(-8px);background:#0b1b33;color:#fff;padding:.35rem .75rem;border-radius:8px;font-size:.75rem;font-weight:600;white-space:nowrap;opacity:0;pointer-events:none;transition:.18s;z-index:1100}
+.nav-item:hover::after{opacity:1;transform:translateY(-50%)}
+@keyframes navPop{45%{transform:scale(1.4);box-shadow:0 0 0 8px var(--gold)}}
+.nav-item.nav-pop{animation:navPop .5s}.nav-item.nav-dim{opacity:.32}
+.slide-pane{display:none;min-height:100vh;padding:2.5rem 2rem 2.5rem 5.5rem}
+.slide-pane.active-slide{display:block}
+.slide-card{background:var(--card);border-radius:40px 12px 40px 12px;padding:2rem 2.5rem;box-shadow:0 20px 40px -12px rgba(11,27,51,.22);border-left:6px solid var(--gold);max-width:1400px;margin:0 auto;font-size:var(--fs,100%)}
+.slide-card h2{font-weight:700;letter-spacing:-.2px}
+.lead2{font-size:1.05em;max-width:900px}
+.board-badge{background:var(--navy);color:var(--bg);padding:.2rem 1rem;border-radius:50px;font-size:.75rem;font-weight:600;display:inline-block}
+.ill{background:var(--gold);color:#0b1b33;padding:.15rem .7rem;border-radius:50px;font-size:.68rem;font-weight:700;display:inline-block}
+.cover-title{font-size:3.6rem;font-weight:700;letter-spacing:-1px}
+.cover-sub{font-size:1.15rem;color:var(--steel);border-left:6px solid var(--gold);padding-left:1.1rem}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:1rem 0}
+.chain.v{flex-direction:column}
+.chip{background:var(--navy);color:var(--bg);padding:.35rem .9rem;border-radius:50px;font-size:.72rem;font-weight:700;letter-spacing:.3px}
+.chip.g{background:var(--gold);color:#0b1b33}
+.arr{color:var(--gold);font-size:.9rem}
+.tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.5rem}
+.tag{border:1px solid var(--bd);background:var(--steel-l);border-radius:50px;padding:.15rem .65rem;font-size:.7rem;font-weight:600}
+.box{background:var(--card);border:1px solid var(--bd);border-radius:24px 8px 24px 8px;padding:1rem 1.2rem;height:100%;transition:transform .2s}
+.box:hover{transform:translateY(-3px)}
+.box h6{font-weight:700;margin-bottom:.3rem}
+.big{font-size:3.4rem;font-weight:700;color:var(--gold);letter-spacing:-1px;line-height:1.05}
+.note{background:rgba(184,146,74,.14);border-left:4px solid var(--gold);padding:.7rem 1rem;border-radius:12px;font-size:.88em;margin-top:1rem}
+.kpi-card{background:var(--card);border-radius:16px;padding:1rem;text-align:center;border:1px solid var(--bd)}
+.kpi-number{font-size:2rem;font-weight:700;color:var(--navy);display:block}
+.kpi-label{font-size:.78rem;color:var(--steel);font-weight:600;display:block}
+.chart-container{background:var(--card);border-radius:20px;padding:1rem;border:1px solid var(--bd);height:100%}
+.rv{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
+.rf{opacity:0}.rf.in{opacity:1}
+.fw{position:relative;width:100%;max-width:540px;aspect-ratio:1;margin:auto}
+.fw .ring{position:absolute;inset:11%;border:2px dashed var(--gold);border-radius:50%;animation:spin 50s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fw .hub{position:absolute;inset:32%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-weight:700;font-size:.8rem;color:var(--steel)}
+.fw .hub i{font-size:1.8rem;color:var(--gold)}
+.fn{position:absolute;transform:translate(-50%,-50%);width:86px;padding:.3rem .15rem;font-size:.56rem;font-weight:700;text-align:center;border:1.5px solid var(--navy);border-radius:14px 4px 14px 4px;background:var(--card);cursor:pointer}
+.fn.rf{transition:opacity .6s,background .2s,color .2s,box-shadow .2s}
+.fn.on,.fn:hover{background:var(--navy);color:var(--bg);box-shadow:0 0 0 3px var(--gold)}
+.eco{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.eco .hubc{display:flex;align-items:center;justify-content:center;font-size:2.4rem;font-weight:700;letter-spacing:2px;background:var(--navy);color:var(--bg);border-radius:40px 12px 40px 12px;padding:1rem;text-align:center}
+.prof{border:1px solid var(--bd);border-radius:20px;overflow:hidden;background:var(--card);box-shadow:0 10px 30px rgba(11,27,51,.15)}
+.prof .top{background:var(--navy);color:#fff;padding:1rem;display:flex;gap:1rem;align-items:center}
+.prof .av{width:64px;height:64px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:2rem;color:#0b1b33;flex-shrink:0}
+.btn-b{background:var(--navy);color:var(--bg);border:none;border-radius:50px;padding:.35rem .9rem;font-size:.72rem;font-weight:700;font-family:inherit}
+.btn-b.o{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-b.on{background:var(--gold);color:#0b1b33}
+.kit{background:linear-gradient(145deg,#0b1b33,#1d3557);color:#fff;border-radius:18px 6px 18px 6px;padding:.9rem;text-align:center;font-weight:700;font-size:.78rem;cursor:zoom-in;border:2px solid var(--gold);height:100%;display:flex;flex-direction:column;gap:.3rem;align-items:center;justify-content:center;min-height:100px}
+.kit i{font-size:1.5rem;color:#d9b46a}.kit small{font-weight:400;opacity:.8}
+.browser{border:1px solid var(--bd);border-radius:16px;overflow:hidden;background:var(--card)}
+.browser .bar{background:var(--steel-l);padding:.4rem .8rem;font-size:.7rem;display:flex;gap:.4rem;align-items:center}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--gold);display:inline-block}
+.track{height:16px;background:var(--steel-l);border-radius:20px;overflow:hidden;position:relative}
+.track>div{height:100%;width:0;background:linear-gradient(90deg,var(--steel),var(--gold));border-radius:20px;transition:width 2s ease}
+.access-toggle{position:fixed;bottom:25px;right:25px;z-index:1070;width:54px;height:54px;border-radius:50%;background:var(--navy);color:var(--bg);border:none;font-size:1.5rem;box-shadow:0 8px 25px rgba(11,27,51,.4);display:flex;align-items:center;justify-content:center}
+.access-panel{position:fixed;bottom:92px;right:25px;z-index:1065;background:var(--panel);backdrop-filter:blur(16px);border-radius:24px;padding:1.3rem 1.5rem;box-shadow:0 12px 40px rgba(0,0,0,.25);border:1px solid var(--bd);width:270px;display:none}
+.access-panel.open{display:block}
+.access-panel h6{font-weight:700;border-bottom:2px solid var(--gold);padding-bottom:.5rem;margin-bottom:.8rem}
+.access-panel .bg{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.5rem}
+.access-panel .bg button{flex:1;background:var(--navy);color:var(--bg);border:none;border-radius:50px;padding:.4rem .7rem;font-size:.72rem;font-weight:600;font-family:inherit}
+#zoomDisplay{text-align:center;font-weight:700}
+#beaconLoader{position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 50% 40%,#1d3557,#0b1b33);display:flex;align-items:center;justify-content:center;transition:opacity .6s,visibility .6s;text-align:center;color:#f7f4ec}
+#beaconLoader.hide{opacity:0;visibility:hidden;pointer-events:none}
+.l-wrap{position:relative;width:120px;height:120px;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.l-wrap .ring{position:absolute;inset:0;border-radius:50%;border:2px dashed rgba(217,180,106,.5);animation:spin 6s linear infinite}
+.l-wrap i{font-size:4rem;color:#d9b46a;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.15);filter:drop-shadow(0 0 18px #d9b46a)}}
+.l-bar{width:min(320px,70vw);height:10px;background:rgba(247,244,236,.18);border-radius:50px;overflow:hidden;margin:1rem auto .4rem}
+.l-bar div{height:100%;width:0;background:linear-gradient(90deg,#b8924a,#f0dcae);border-radius:50px}
+#lb{position:fixed;inset:0;background:rgba(5,10,20,.93);display:none;align-items:center;justify-content:center;z-index:2000}
+#lb.open{display:flex}
+#lbBody{transition:transform .15s;width:min(340px,80vw)}
+.lbc{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:.6rem;background:rgba(0,0,0,.7);padding:.5rem 1rem;border-radius:50px}
+.lbc button,.lbx{width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff}
+.lbx{position:absolute;top:16px;right:16px}
+@media(max-width:992px){.eco{grid-template-columns:1fr}.eco .hubc{order:-1}}
+@media(max-width:768px){.wheel-nav{left:.4rem;padding:.4rem .2rem}.nav-item{width:28px;height:28px;font-size:.68rem}.slide-pane{padding:1.2rem .8rem 1.2rem 3rem}.slide-card{padding:1rem 1.1rem}.cover-title{font-size:2.1rem}.big{font-size:2.4rem}.fn{width:66px;font-size:.46rem}}
+@media(prefers-reduced-motion:reduce){.rv,.rf{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<div id="beaconLoader"><div><div class="l-wrap"><div class="ring"></div><i class="bi bi-brightness-high-fill"></i></div>
+<h4 class="fw-bold">Beacon of Excellence</h4><div id="lStatus" class="small" style="color:#d9b46a;min-height:1.3rem"></div>
+<div class="l-bar"><div id="lFill"></div></div><div id="lPct" class="small">0%</div></div></div>
+
+<button class="access-toggle" id="accessToggle" title="Accessibility Controls"><i class="bi bi-universal-access-circle"></i></button>
+<div class="access-panel" id="accessPanel">
+<h6><i class="bi bi-sliders2 me-2"></i>Accessibility Controls</h6>
+<div id="zoomDisplay">100%</div>
+<div class="bg"><button onclick="zoomBy(10)">+</button><button onclick="zoomBy(-10)">−</button><button onclick="zoomBy(0)"><i class="bi bi-arrow-counterclockwise"></i></button></div>
+<div class="bg"><button onclick="document.body.classList.toggle('dark-mode')"><i class="bi bi-moon"></i> Dark</button><button onclick="document.body.classList.toggle('high-contrast')"><i class="bi bi-eye"></i> Contrast</button></div>
+<div class="bg"><button onclick="fontBy(5)">A+</button><button onclick="fontBy(-5)">A−</button><button onclick="fontBy(0)">Reset</button></div>
+<div class="bg"><button onclick="fs()"><i class="bi bi-arrows-fullscreen"></i> Fullscreen</button></div>
+</div>
+
+<nav class="wheel-nav" id="wheelNav"></nav>
+
+<div class="zoom-container" id="zoomContainer">
+
+<!-- 1 VISION -->
+<div class="slide-pane active-slide" id="slide-0"><div class="slide-card" style="border-left-color:var(--navy)">
+<div class="d-flex justify-content-between flex-wrap gap-2 rv"><span class="board-badge"><i class="bi bi-building me-1"></i> STRATEGIC BUSINESS &amp; GROWTH DIRECTION</span><span class="small text-muted">2026</span></div>
+<h1 class="cover-title mt-3 rv"><i class="bi bi-brightness-high-fill" style="color:var(--gold)"></i> Beacon of Excellence Awards</h1>
+<h2 class="rv" style="color:var(--steel);font-weight:300">Building a Recognition Platform, Not Just an Awards Event</h2>
+<p class="small rv">Prepared and Compiled by <strong>Mesh</strong></p>
+<hr class="my-4">
+<h2 class="display-6 rv">What exactly are we building?</h2>
+<p class="lead2 rv">Beacon is a recognition and visibility platform designed to discover people and organisations doing meaningful work, give that excellence a professional public profile, connect it with communities, and ultimately create a growing network around recognition.</p>
+<div class="chain" data-c="PEOPLE|EXCELLENCE|RECOGNITION|VISIBILITY|COMMUNITY|RELATIONSHIPS|BUSINESS"></div>
+<div class="note rv"><i class="bi bi-stars me-1"></i> The awards event is the <strong>flagship experience</strong>, not the entire business.</div>
+</div></div>
+
+<!-- 2 OPPORTUNITY -->
+<div class="slide-pane" id="slide-1"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-search me-2"></i>The Opportunity</h2>
+<p class="lead2 rv">Thousands of people and organisations are doing meaningful work, and most of that excellence is invisible outside their immediate networks. Beacon creates a mechanism for discovering and documenting it.</p>
+<div class="tags" data-t="Businesses|Professionals|Doctors|Lawyers|Engineers|Teachers|Entrepreneurs|Creatives|Community contributors|Young innovators|Organisations|Institutions|Emerging leaders"></div>
+<div class="row g-3 mt-2">
+<div class="col-md-4 col-lg"><div class="box rv"><i class="bi bi-heart-pulse fs-3" style="color:var(--gold)"></i><h6>A doctor</h6><small>whose work has genuinely impacted patients.</small></div></div>
+<div class="col-md-4 col-lg"><div class="box rv"><i class="bi bi-lightning-charge fs-3" style="color:var(--gold)"></i><h6>A young entrepreneur</h6><small>building something important.</small></div></div>
+<div class="col-md-4 col-lg"><div class="box rv"><i class="bi bi-mortarboard fs-3" style="color:var(--gold)"></i><h6>A school</h6><small>creating exceptional outcomes.</small></div></div>
+<div class="col-md-6 col-lg"><div class="box rv"><i class="bi bi-buildings fs-3" style="color:var(--gold)"></i><h6>A company</h6><small>creating employment or innovation.</small></div></div>
+<div class="col-md-6 col-lg"><div class="box rv"><i class="bi bi-palette fs-3" style="color:var(--gold)"></i><h6>A creative</h6><small>whose work has influenced a community.</small></div></div>
+</div>
+<p class="mt-4 mb-0 rv">Beacon doesn't wait for these people to find us.</p>
+<div class="big rv">We find them.</div>
+</div></div>
+
+<!-- 3 ENGINE -->
+<div class="slide-pane" id="slide-2"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-arrow-repeat me-2"></i>The Beacon Engine</h2>
+<div class="row align-items-center g-4">
+<div class="col-lg-7"><div class="fw" id="fw"><div class="ring"></div><div class="hub"><i class="bi bi-arrow-repeat"></i>THE FLYWHEEL<small class="fw-normal">the last stage feeds back into Discover</small></div></div></div>
+<div class="col-lg-5">
+<p class="rv">We begin upstream, before the nomination reaches the public. Our team actively discovers potential nominees, researches their work, verifies relevance and creates a professional recognition profile before approaching them.</p>
+<p class="rv">The nominee is not only the subject of recognition. Once participating, they can become part of Beacon's distribution network by sharing their profile and story with their own community.</p>
+<div class="note" id="fwPanel"><strong>Click any stage</strong> to see what it does.</div>
+</div></div>
+</div></div>
+
+<!-- 4 ECOSYSTEM -->
+<div class="slide-pane" id="slide-3"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-diagram-3 me-2"></i>Who We Recognise</h2>
+<p class="lead2 rv">Beacon does not have one narrow audience. Each category creates another doorway into the market.</p>
+<div class="eco">
+<div class="box rv"><h6><i class="bi bi-bank me-1"></i>Business &amp; Corporate</h6><div class="tags" data-t="Banks|Insurance|Telecommunications|Manufacturing|Retail|Real Estate|Professional Firms|Startups|SMEs"></div></div>
+<div class="box rv"><h6><i class="bi bi-award me-1"></i>Professional Excellence</h6><div class="tags" data-t="Healthcare|Law|Engineering|Architecture|Education|Research|Finance|Technology|Consulting"></div></div>
+<div class="box rv"><h6><i class="bi bi-camera-reels me-1"></i>Creative &amp; Media</h6><div class="tags" data-t="Music|Art|Film|Photography|Writing|Design|Digital Creators"></div></div>
+<div class="box rv"><h6><i class="bi bi-people me-1"></i>Community &amp; Social Impact</h6><div class="tags" data-t="Community leadership|Volunteering|Social enterprise|Community projects|Impact initiatives"></div></div>
+<div class="hubc rv"><div><i class="bi bi-brightness-high-fill d-block" style="color:var(--gold)"></i>BEACON</div></div>
+<div class="box rv"><h6><i class="bi bi-rocket-takeoff me-1"></i>Youth &amp; Emerging Excellence</h6><div class="tags" data-t="Young entrepreneurs|Student innovators|Young leaders|Young scientists|Young creatives|Technology innovators"></div></div>
+</div>
+<div class="note rv"><i class="bi bi-shield-check me-1"></i> Where children are involved, categories must be genuinely appropriate, and <strong>safeguarding, parental/guardian consent and privacy requirements apply</strong>.</div>
+</div></div>
+
+<!-- 5 NOMINEE -->
+<div class="slide-pane" id="slide-4"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-person-badge me-2"></i>The Nominee Story <span class="ill ms-2">ILLUSTRATIVE NOMINEE JOURNEY</span></h2>
+<p class="rv mb-0">Meet "Dr. A", a fictional nominee.</p>
+<div class="chain" data-c="DISCOVERED|RESEARCHED|NOMINATED|PROFILE CREATED|CONTACTED|PARTICIPATES|SHARES PROFILE|COMMUNITY ENGAGES|FINALIST|RECOGNISED"></div>
+<div class="row g-4">
+<div class="col-lg-6"><div class="prof rv">
+<div class="top"><div class="av"><i class="bi bi-person-fill"></i></div><div><div class="fw-bold fs-5">DR. JANE MWANGI</div><div class="small">Healthcare Excellence</div><span class="ill">Nominated · Beacon of Excellence Awards 2026</span></div></div>
+<div class="p-3"><strong>Why we nominated her</strong><p class="small mb-2">Illustrative copy: a physician recognised in her community for patient-centred care and for training younger clinicians.</p>
+<div class="tags mb-2" data-t="Patient outcomes|Mentorship|Community health"></div>
+<div class="small mb-2"><i class="bi bi-patch-check-fill" style="color:var(--gold)"></i> Status: Nominee · Profile link: <em>beacon/nominee/dr-jane-mwangi</em> (prototype)</div>
+<button class="btn-b me-1"><i class="bi bi-share"></i> Share Profile</button><button class="btn-b on me-1">Support Nomination</button><button class="btn-b o">Explore Category</button>
+<div class="small text-muted mt-2">Prototype only. Not a real nominee.</div></div></div></div>
+<div class="col-lg-6">
+<p class="rv"><strong>A nomination without a destination is simply a message.</strong> A Beacon profile gives the recognition somewhere to live.</p>
+<p class="rv">Once a nominee has a professional profile, Beacon has something tangible to take back to that person, and something that person can share with their own network.</p>
+<div class="tags rv" data-t="Name|Category|Photograph|Why we nominated them|Areas of excellence|Achievements|Recognition status|Profile link|Support / vote CTA|Social sharing"></div>
+<div class="note rv">This is one of the central ideas of the whole model.</div>
+</div></div>
+</div></div>
+
+<!-- 6 NETWORK -->
+<div class="slide-pane" id="slide-5"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-share me-2"></i>From Nominee to Network</h2>
+<p class="lead2 rv">This is where the model begins to compound. Beacon does not have to acquire every person directly: a participating nominee already has a network of people who trust them.</p>
+<div class="text-center">
+<span class="chip g rv fs-6">ONE NOMINEE</span><div class="arr rv"><i class="bi bi-arrow-down"></i></div>
+<div class="chain justify-content-center my-1" data-c="CLIENTS|COLLEAGUES|FOLLOWERS"></div><div class="arr rv"><i class="bi bi-arrow-down"></i></div>
+<div class="chain justify-content-center my-1" data-c="FRIENDS|FAMILY|COMMUNITY"></div><div class="arr rv"><i class="bi bi-arrow-down"></i></div>
+<div class="chain justify-content-center my-1" data-c="NEW AUDIENCE|BEACON|MORE DISCOVERY"></div></div>
+<h5 class="mt-3 rv">The nominee media kit <span class="ill">ILLUSTRATIVE · click to enlarge</span></h5>
+<div class="row g-3" id="kit"></div>
+</div></div>
+
+<!-- 7 COMMERCIAL -->
+<div class="slide-pane" id="slide-6"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-briefcase me-2"></i>Corporates, Partnerships &amp; Commercial Growth</h2>
+<div class="big rv" style="font-size:2.4rem">Sponsorship is not the starting point.</div>
+<p class="lead2 rv">We first build the recognition ecosystem. Commercial relationships then emerge around something that already has people, stories, audiences and relevance.</p>
+<div class="chain" data-c="RECOGNITION|NOMINEES|COMMUNITY|AUDIENCE|RELATIONSHIPS|PARTNERSHIPS|COMMERCIAL REVENUE"></div>
+<div class="row g-3 text-center mb-3">
+<div class="col-12"><span class="chip g rv">ORGANISATION</span></div>
+<div class="col-md-4"><div class="box rv"><h6>Nominee</h6><small>Recognition</small></div></div>
+<div class="col-md-4"><div class="box rv"><h6>Partner</h6><small>Strategic relationship</small></div></div>
+<div class="col-md-4"><div class="box rv"><h6>Sponsor</h6><small>Financial / in-kind support</small></div></div></div>
+<h5 class="rv">Different doors in <span class="ill">ILLUSTRATIVE PARTNERSHIP CONCEPTS</span></h5>
+<div class="row g-3">
+<div class="col-md-6 col-lg-3"><div class="box rv"><h6><i class="bi bi-bank me-1"></i>Bank</h6><div class="tags" data-t="Entrepreneurship|Business leadership|Financial literacy|SMEs|Young innovators"></div></div></div>
+<div class="col-md-6 col-lg-3"><div class="box rv"><h6><i class="bi bi-cpu me-1"></i>Technology company</h6><div class="tags" data-t="Innovation|Digital transformation|Young talent|Tech entrepreneurs"></div></div></div>
+<div class="col-md-6 col-lg-3"><div class="box rv"><h6><i class="bi bi-hospital me-1"></i>Healthcare organisation</h6><div class="tags" data-t="Healthcare excellence|Medical innovation|Community health"></div></div></div>
+<div class="col-md-6 col-lg-3"><div class="box rv"><h6><i class="bi bi-cup-hot me-1"></i>Hospitality brand</h6><div class="tags" data-t="VIP experience|Events|Corporate networking|Guest experience"></div></div></div></div>
+<p class="mt-3 rv">We don't approach organisations simply because they have money. We approach them because there is a credible connection between what they do and the communities Beacon is building.</p>
+<div class="chain" data-c="TARGET|RESEARCH|CONTACT|CONVERSATION|MEETING|PARTNERSHIP IDEA|PROPOSAL|AGREEMENT|DELIVERY|LONG-TERM RELATIONSHIP"></div>
+<div class="note rv">Representatives are chosen for communication ability, professionalism, relationship, industry understanding, confidence, context and cultural awareness. <strong>Right person + right prospect + right context.</strong></div>
+</div></div>
+
+<!-- 8 WEBSITE -->
+<div class="slide-pane" id="slide-7"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-window-stack me-2"></i>The Website + Marketing Engine</h2>
+<div class="row g-4">
+<div class="col-lg-6"><div class="browser rv"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="ms-2">beacon / nominee / dr-jane-mwangi &nbsp;<span class="ill">PROTOTYPE</span></span></div>
+<div class="p-3"><div class="tags mb-2" data-t="About Beacon|Categories|Nominees|How voting works|Partnerships|Contact"></div>
+<div class="fw-bold">Dr. Jane Mwangi <small class="text-muted">· Healthcare Excellence</small></div><small>Nominated, Beacon of Excellence Awards 2026 (illustrative)</small><br><button class="btn-b mt-2 me-1">Share Profile</button><button class="btn-b on mt-2">Support Nomination</button></div></div>
+<div class="chain" data-c="WHATSAPP|LINKEDIN|INSTAGRAM|FACEBOOK|COMMUNITY|WEBSITE"></div></div>
+<div class="col-lg-6"><p class="rv"><strong>The website is Beacon's credibility layer.</strong> Someone who receives a nomination message should click through and immediately understand who Beacon is, what the awards represent, what categories exist, who is being recognised, how participation and voting work, how to make contact, and how partnerships work.</p>
+<p class="rv">Marketing does not exist to keep the social pages busy. Its job is to create discovery, credibility, activation and momentum.</p></div></div>
+<div class="chain" data-c="CONTENT|DISCOVERY|PROFILE|SHARING|COMMUNITY|ENGAGEMENT|MORE CONTENT"></div>
+<div class="row g-2" id="content"></div>
+</div></div>
+
+<!-- 9 ANALYTICS -->
+<div class="slide-pane" id="slide-8"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-graph-up-arrow me-2"></i>Analytics &amp; Business Projection <span class="ill ms-2">ILLUSTRATIVE LOW / HIGH SCENARIOS</span></h2>
+<p class="lead2 rv">The purpose of the projection is to establish a planning range, not to promise an outcome. Actual performance depends on nominee participation, voting mechanics, audience growth, partnerships, sponsorship, event monetisation and execution.</p>
+<div class="row g-3 mb-3">
+<div class="col-6 col-lg"><div class="kpi-card rv"><span class="kpi-number" data-count="500" data-suf="+">0</span><span class="kpi-label">Potential nominees</span><span class="ill">TARGET</span></div></div>
+<div class="col-6 col-lg"><div class="kpi-card rv"><span class="kpi-number" data-count="300" data-suf="+">0</span><span class="kpi-label">Verified / qualified</span><span class="ill">PIPELINE</span></div></div>
+<div class="col-6 col-lg"><div class="kpi-card rv"><span class="kpi-number" data-count="200" data-suf="+">0</span><span class="kpi-label">Participating</span><span class="ill">TARGET</span></div></div>
+<div class="col-6 col-lg"><div class="kpi-card rv"><span class="kpi-number" data-count="200000" data-suf="+">0</span><span class="kpi-label">Votes / engagement</span><span class="ill">SCENARIO</span></div></div>
+<div class="col-12 col-lg"><div class="kpi-card rv"><span class="kpi-number">KES 0.5M–3M</span><span class="kpi-label">Revenue range</span><span class="ill">PLANNING SCENARIO</span></div></div></div>
+<div class="box mb-3 rv"><div class="d-flex justify-content-between fw-bold"><span>LOW CASE · KES 500,000+</span><span>HIGH CASE · KES 3,000,000</span></div><div class="track my-2"><div id="rangeFill"></div></div>
+<div class="tags" data-t="Public engagement (where applicable)|Sponsorship|Partnerships|Event tickets|VIP experiences|Category partnerships|Advertising / media|In-kind relationships|Future Beacon products"></div><small class="text-muted">Not guaranteed revenue. No percentage split is assumed.</small></div>
+<div class="box mb-3 rv" id="simBox">
+<div class="d-flex justify-content-between flex-wrap gap-2 align-items-center"><h6 class="mb-0"><i class="bi bi-sliders me-1"></i>Target simulator <span class="ill">ILLUSTRATIVE · DRAG TO EXPLORE</span></h6><div id="presets"></div></div>
+<div class="d-flex justify-content-between mt-3 small fw-bold"><span>KES 100K</span><span id="simTarget" style="font-size:1.4rem;color:var(--gold)">KES 3M</span><span>KES 10M</span></div>
+<input type="range" id="tgt" min="0" max="100" step="0.25" value="73.86" style="width:100%;accent-color:var(--gold)" aria-label="Revenue target">
+<div class="row g-3 mt-1 text-center">
+<div class="col-6 col-md-3"><div class="kpi-card"><span class="kpi-number" id="simVotes">0</span><span class="kpi-label">Votes needed</span></div></div>
+<div class="col-6 col-md-3"><div class="kpi-card"><span class="kpi-number" id="simNom">0</span><span class="kpi-label">Estimated nominees</span></div></div>
+<div class="col-6 col-md-3"><label class="small fw-bold d-block">Price per vote (KES)</label><input type="number" id="vPrice" value="10" min="1" class="form-control form-control-sm text-center"></div>
+<div class="col-6 col-md-3"><label class="small fw-bold d-block">Revenue per nominee (KES)</label><input type="number" id="nRev" value="6000" min="100" class="form-control form-control-sm text-center"></div></div>
+<small class="text-muted d-block mt-2">Assumes the target is earned from votes at the price shown; nominee count is a planning estimate from revenue per nominee. Other revenue streams (sponsorship, tickets) would reduce the votes needed.</small></div>
+<div class="chart-container rv"><div class="d-flex justify-content-between flex-wrap gap-2"><h6>Campaign trajectory <span class="ill">ILLUSTRATIVE PLANNING ASSUMPTIONS</span></h6>
+<div id="serBtns"><button class="btn-b me-1" data-s="all">All</button><button class="btn-b o me-1" data-s="0">Nominees</button><button class="btn-b o me-1" data-s="1">Votes</button><button class="btn-b o" data-s="2">Revenue</button></div></div>
+<canvas id="comboChart" height="110"></canvas><small class="text-muted">More recognised people → more communities → more engagement → more commercial opportunity.</small></div>
+<h5 class="mt-4 rv">Category analytics <span class="ill">ILLUSTRATIVE DATA · click a group</span></h5>
+<div class="row g-3"><div class="col-lg-5"><div id="catBtns" class="d-flex flex-wrap gap-2 mb-2"></div><div class="box" id="catPanel"></div></div>
+<div class="col-lg-7"><div class="chart-container"><canvas id="catChart" height="150"></canvas></div></div></div>
+</div></div>
+
+<!-- 10 START -->
+<div class="slide-pane" id="slide-9"><div class="slide-card">
+<h2 class="rv"><i class="bi bi-rocket-takeoff me-2"></i>What We Need to Start</h2>
+<p class="lead2 rv">The first requirement is not a massive budget. It is the basic infrastructure to become operational.</p>
+<div class="row g-3 text-center">
+<div class="col-md-3"><div class="box rv"><small>DOMAIN</small><div class="big">≈US$11</div></div></div>
+<div class="col-md-3"><div class="box rv"><small>RAILWAY SERVER</small><div class="big">≈US$20<small class="fs-6">/mo</small></div></div></div>
+<div class="col-md-3"><div class="box rv"><small>FIRST 3 MONTHS</small><div class="big">≈US$60</div></div></div>
+<div class="col-md-3"><div class="box rv" style="background:var(--navy);color:var(--bg)"><small>KNOWN INFRASTRUCTURE BASELINE</small><div class="big">≈US$71</div></div></div></div>
+<div class="note rv">This is only the known technology baseline. It does not represent the full operational or event budget.</div>
+<p class="mt-3 rv">Once the infrastructure is secured, we move from planning into controlled execution. The next question is whether to allocate a controlled budget to paid digital advertising, framed as an experiment, not an assumption that ads will work.</p>
+<div class="chain" data-c="SMALL TEST|MEASURE|COST PER RESULT|COMPARE AGAINST ORGANIC|SCALE WHAT WORKS"></div>
+<div class="tags rv" data-t="Nominee discovery|Profile visits|Public engagement|Website traffic|Participation|Commercial enquiries"></div>
+</div></div>
+
+<!-- 11 DECISION -->
+<div class="slide-pane" id="slide-10"><div class="slide-card text-center" style="border-left-color:var(--navy)">
+<h2 class="rv text-muted fw-normal">The Decision</h2>
+<div class="big rv" style="font-size:3.6rem;color:var(--navy)">BUILD THE PLATFORM FIRST.</div>
+<div class="mt-3 fs-5">
+<div class="rv">Find the people.</div><div class="rv">Tell their stories.</div><div class="rv">Give them a Beacon.</div><div class="rv">Let them bring their communities.</div><div class="rv">Build the network.</div><div class="rv">Build the trust.</div><div class="rv fw-bold">Then build the business.</div></div>
+<hr class="my-4"><i class="bi bi-brightness-high-fill rv" style="font-size:2.8rem;color:var(--gold)"></i>
+<h3 class="rv fw-bold">BEACON OF EXCELLENCE</h3><p class="rv" style="color:var(--steel)">Recognition that becomes a network.</p><p class="rv small">Prepared and Compiled by <strong>Mesh</strong></p>
+</div></div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lb"><button class="lbx" onclick="closeZ()"><i class="bi bi-x-lg"></i></button><div id="lbBody"></div>
+<div class="lbc"><button onclick="lbZ(-.25)"><i class="bi bi-dash-circle"></i></button><button onclick="lbZ(0)"><i class="bi bi-arrow-counterclockwise"></i></button><button onclick="lbZ(.25)"><i class="bi bi-plus-circle"></i></button><button onclick="fs()"><i class="bi bi-arrows-fullscreen"></i></button></div></div>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+/* loader */
+(function(){const m=['Preparing board presentation…','Mapping the ecosystem…','Lighting the beacon…','Almost ready…'],t0=performance.now(),D=3200;
+(function tick(n){const p=Math.min(100,(n-t0)/D*100);$('#lFill').style.width=p+'%';$('#lPct').textContent=Math.round(p)+'%';$('#lStatus').textContent=m[Math.min(3,Math.floor(p/25))];
+if(p<100)requestAnimationFrame(tick);else setTimeout(()=>{$('#beaconLoader').classList.add('hide');reveal($('#slide-0'))},300)})(t0)})();
+/* builders */
+$$('.chain').forEach(c=>{const v=c.classList.contains('v');c.innerHTML=c.dataset.c.split('|').map((t,i,a)=>`<span class="chip rv">${t}</span>`+(i<a.length-1?`<i class="bi ${v?'bi-arrow-down':'bi-arrow-right'} arr rv"></i>`:'')).join('')});
+$$('.tags').forEach(c=>{c.innerHTML=c.dataset.t.split('|').map(t=>`<span class="tag">${t}</span>`).join('')});
+const NAV=[['bi-eye','Vision'],['bi-search','Opportunity'],['bi-arrow-repeat','Beacon Engine'],['bi-diagram-3','Recognition Ecosystem'],['bi-person-badge','Nominee Journey'],['bi-share','Network Effect'],['bi-briefcase','Commercial Model'],['bi-window-stack','Website & Marketing'],['bi-graph-up-arrow','Analytics'],['bi-rocket-takeoff','Start Here'],['bi-flag','The Decision']];
+$('#wheelNav').innerHTML=NAV.map((n,i)=>`<div class="nav-item" data-slide="${i}" data-label="${n[1]}" aria-label="${n[1]}"><i class="bi ${n[0]}"></i></div>`).join('');
+const KIT=[['bi-award','I Have Been Nominated','Announcement'],['bi-hand-thumbs-up','Support My Nomination','Call to action'],['bi-whatsapp','WhatsApp Status','9:16'],['bi-instagram','Instagram Story','9:16'],['bi-linkedin','LinkedIn Post','Professional'],['bi-hourglass-split','Countdown','Voting closes soon'],['bi-star','Finalist','I made the shortlist'],['bi-trophy','Winner','Recognised']];
+$('#kit').innerHTML=KIT.map(k=>`<div class="col-6 col-md-3"><div class="kit zoomable rv" onclick="openZ(this)"><i class="bi ${k[0]}"></i>${k[1]}<small>${k[2]} · illustrative</small></div></div>`).join('');
+const CNT=[['bi-book','Beacon Stories'],['bi-person-video2','Meet the Nominee'],['bi-question-circle','Why They Were Nominated'],['bi-collection','Category Spotlight'],['bi-camera-video','Behind the Beacon'],['bi-star','Finalist Stories'],['bi-trophy','Winner Stories']];
+$('#content').innerHTML=CNT.map(k=>`<div class="col-6 col-md"><div class="box rv text-center"><i class="bi ${k[0]} fs-3" style="color:var(--gold)"></i><h6 class="small mb-0">${k[1]}</h6></div></div>`).join('');
+/* flywheel */
+const FW=[['DISCOVER','We begin upstream: the team actively looks for people and organisations doing meaningful work.'],['RESEARCH','We study their work and relevance so recognition rests on evidence.'],['VERIFY','Claims are checked against credible sources before anything is published.'],['NOMINATE','A verified candidate is entered into the right category.'],['CREATE BEACON PROFILE','The profile turns a nomination into a tangible digital asset that can be shared, discovered and revisited.'],['CONTACT','With a profile in hand, Beacon approaches the nominee with something real to show.'],['PARTICIPATE','The nominee accepts, confirms details and takes part.'],['ACTIVATE NETWORK','The nominee shares their story with clients, colleagues, family and followers.'],['PUBLIC ENGAGEMENT','Communities support, share and, where applicable, vote.'],['FINALISTS','Engagement and evaluation surface the finalists.'],['WINNERS','Recognition is confirmed at the flagship event.'],['STORIES + CONTENT','Every stage produces stories that feed Beacon media and marketing.'],['COMMUNITY','Audiences formed around nominees become a standing Beacon community.'],['PARTNERSHIPS','Organisations connect with communities they have a credible link to.'],['MORE DISCOVERY','New audiences surface new people worth recognising, and the loop returns to DISCOVER.']];
+FW.forEach((s,i)=>{const a=(i/FW.length)*2*Math.PI-Math.PI/2,d=document.createElement('div');d.className='fn rf';d.textContent=s[0];d.style.left=(50+41*Math.cos(a))+'%';d.style.top=(50+41*Math.sin(a))+'%';
+d.onclick=d.onmouseenter=()=>{$$('.fn').forEach(x=>x.classList.remove('on'));d.classList.add('on');$('#fwPanel').innerHTML=`<strong>${s[0]}</strong><br>${s[1]}`};$('#fw').appendChild(d)});
+/* navigation + reveal */
+const navItems=$$('.nav-item'),slides=$$('.slide-pane');let dimT,chartsInit=false;
+function reveal(p){const els=$$('#'+p.id+' .rv,#'+p.id+' .rf');els.forEach(e=>{e.classList.remove('in');e.style.transitionDelay=''});void p.offsetWidth;els.forEach((e,k)=>{e.style.transitionDelay=Math.min(k*60,1800)+'ms';e.classList.add('in')})}
+function goToSlide(i){slides.forEach(s=>s.classList.remove('active-slide'));slides[i].classList.add('active-slide');clearTimeout(dimT);
+navItems.forEach((n,k)=>{n.classList.remove('active','nav-pop','nav-dim');if(k===i){n.classList.add('active');void n.offsetWidth;n.classList.add('nav-pop')}else n.classList.add('nav-dim')});
+dimT=setTimeout(()=>navItems.forEach(n=>n.classList.remove('nav-dim')),650);window.scrollTo(0,0);reveal(slides[i]);
+if(i===8){counters();$('#rangeFill').style.width='0';setTimeout(()=>$('#rangeFill').style.width='100%',200);initCharts()}}
+navItems.forEach(n=>n.onclick=e=>{e.stopPropagation();goToSlide(+n.dataset.slide)});
+document.addEventListener('keydown',e=>{if($('#lb').classList.contains('open')){if(e.key==='Escape')closeZ();return}
+const a=slides.findIndex(s=>s.classList.contains('active-slide'));let n=a;if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();n=Math.min(a+1,slides.length-1)}else if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();n=Math.max(a-1,0)}if(n!==a)goToSlide(n)});
+goToSlide(0);
+function counters(){$$('[data-count]').forEach(el=>{const T=+el.dataset.count,s=el.dataset.suf||'',t0=performance.now();(function f(n){const p=Math.min(1,(n-t0)/1600);el.textContent=Math.round(T*(1-Math.pow(1-p,3))).toLocaleString()+(p===1?s:'');if(p<1)requestAnimationFrame(f)})(t0)})}
+/* charts */
+const NAVY='#0b1b33',GOLD='#b8924a',STEEL='#5b7594';let combo,cat;
+const CATS=[['Corporate & Business',[140,90,60,60000,12],'Very high: natural entry point for partnerships and category sponsorship.'],['Professional Excellence',[120,75,50,45000,10],'High: credibility-driven; strong fit for banks, insurers and healthcare partners.'],['Creative & Media',[80,50,30,30000,8],'Medium: strong shareability and content value; media opportunities.'],['Community & Social Impact',[90,55,35,40000,8],'Medium: goodwill and purpose-led partnerships.'],['Youth & Emerging Excellence',[70,30,25,25000,7],'High long-term: future talent pipeline; safeguarding and consent required.']];
+function selCat(i){$$('#catBtns button').forEach((b,k)=>b.className='btn-b'+(k===i?' on':' o'));const c=CATS[i],v=c[1];
+$('#catPanel').innerHTML=`<h6>${c[0]} <span class="ill">ILLUSTRATIVE</span></h6><div class="small">Potential nominee pool: <strong>${v[0]}</strong><br>Profiles created: <strong>${v[1]}</strong><br>Participation: <strong>${v[2]}</strong><br>Engagement / votes: <strong>${v[3].toLocaleString()}</strong><br>Finalists: <strong>${v[4]}</strong><br>Commercial relevance: ${c[2]}</div>`;
+if(cat){cat.data.datasets.forEach((d,k)=>d.backgroundColor=CATS.map((_,j)=>j===i?[NAVY,STEEL,GOLD][k]:[NAVY,STEEL,GOLD][k]+'55'));cat.update()}}
+$('#catBtns').innerHTML=CATS.map((c,i)=>`<button class="btn-b o" onclick="selCat(${i})">${c[0].split(' &')[0]}</button>`).join('');
+function initCharts(){if(chartsInit)return;chartsInit=true;
+const L=['Foundation','Early Growth','Expansion','Momentum','Finalist Stage','Event / Peak'];
+combo=new Chart($('#comboChart'),{data:{labels:L,datasets:[{type:'bar',label:'Nominees',data:[50,100,200,350,500,520],backgroundColor:STEEL,yAxisID:'y',borderRadius:4},{type:'line',label:'Votes / engagement',data:[500,3000,15000,40000,100000,200000],borderColor:NAVY,yAxisID:'y1',tension:.3},{type:'line',label:'Revenue (KES thousands)',data:[0,100,300,750,1500,3000],borderColor:GOLD,borderWidth:3,yAxisID:'y2',tension:.3}]},
+options:{responsive:true,interaction:{mode:'index',intersect:false},plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+': '+c.parsed.y.toLocaleString()+(c.datasetIndex===2?'K':'')+' (illustrative)'}}},scales:{y:{beginAtZero:true,title:{display:true,text:'Nominees'}},y1:{position:'right',beginAtZero:true,grid:{drawOnChartArea:false},title:{display:true,text:'Votes'}},y2:{display:false,beginAtZero:true}}}});
+$$('#serBtns button').forEach(b=>b.onclick=()=>{$$('#serBtns button').forEach(x=>x.classList.add('o'));b.classList.remove('o');const s=b.dataset.s;combo.data.datasets.forEach((d,k)=>combo.setDatasetVisibility(k,s==='all'||+s===k));combo.update()});
+cat=new Chart($('#catChart'),{type:'bar',data:{labels:CATS.map(c=>c[0].split(' &')[0]),datasets:[{label:'Potential pool',data:CATS.map(c=>c[1][0]),backgroundColor:NAVY,borderRadius:4},{label:'Profiles',data:CATS.map(c=>c[1][1]),backgroundColor:STEEL,borderRadius:4},{label:'Participating',data:CATS.map(c=>c[1][2]),backgroundColor:GOLD,borderRadius:4}]},options:{responsive:true,plugins:{title:{display:true,text:'Illustrative pipeline by category group'}},scales:{y:{beginAtZero:true}}}});selCat(0);sim()}
+selCat(0);
+/* target simulator: log slider 100K to 10M */
+const fmtK=n=>n>=1e6?'KES '+(+(n/1e6).toFixed(2))+'M':'KES '+(n/1e3)+'K';
+const RF=[0,1/30,.1,.25,.5,1],VF=[.0025,.015,.075,.2,.5,1],NF=[50,100,200,350,500,520].map(x=>x/520);
+function sim(){const v=+$('#tgt').value;let T=100000*Math.pow(100,v/100);const r=Math.pow(10,Math.floor(Math.log10(T))-1);T=Math.round(T/r)*r;
+const pr=Math.max(1,+$('#vPrice').value||10),pn=Math.max(100,+$('#nRev').value||6000),votes=Math.round(T/pr),nom=Math.max(1,Math.round(T/pn));
+$('#simTarget').textContent=fmtK(T);$('#simVotes').textContent=votes.toLocaleString();$('#simNom').textContent=nom.toLocaleString();
+if(combo){combo.data.datasets[0].data=NF.map(f=>Math.max(1,Math.round(f*nom)));combo.data.datasets[1].data=VF.map(f=>Math.round(f*votes));combo.data.datasets[2].data=RF.map(f=>Math.round(f*T/1000));combo.update('none')}}
+$('#presets').innerHTML=[100000,500000,1000000,3000000,10000000].map(t=>`<button class="btn-b o me-1" data-t="${t}">${fmtK(t)}</button>`).join('');
+$$('#presets button').forEach(b=>b.onclick=()=>{$('#tgt').value=100*Math.log(+b.dataset.t/100000)/Math.log(100);sim()});
+['input','change'].forEach(ev=>['#tgt','#vPrice','#nRev'].forEach(s=>$(s).addEventListener(ev,sim)));sim();
+/* lightbox */
+let lz=1;function lbZ(d){lz=d===0?1.6:Math.max(.6,Math.min(3,lz+d));$('#lbBody').style.transform=`scale(${lz})`}
+function openZ(el){const c=el.cloneNode(true);c.classList.remove('zoomable','rv');c.style.opacity=1;c.style.transform='none';c.removeAttribute('onclick');$('#lbBody').innerHTML='';$('#lbBody').appendChild(c);lbZ(0);$('#lb').classList.add('open')}
+function closeZ(){$('#lb').classList.remove('open')}
+$('#lb').onclick=e=>{if(e.target.id==='lb')closeZ()};
+/* accessibility */
+let zl=100,fz=100;$('#accessToggle').onclick=e=>{e.stopPropagation();$('#accessPanel').classList.toggle('open')};
+document.addEventListener('click',e=>{if(!$('#accessPanel').contains(e.target))$('#accessPanel').classList.remove('open')});
+function zoomBy(d){zl=d===0?100:Math.max(50,Math.min(200,zl+d));$('#zoomContainer').style.transform=`scale(${zl/100})`;$('#zoomDisplay').textContent=zl+'%'}
+function fontBy(d){fz=d===0?100:Math.max(70,Math.min(150,fz+d));document.documentElement.style.setProperty('--fs',fz+'%')}
+function fs(){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})}
+</script>
+</body>
+</html>
